@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 // Import necessary components from react-router-dom
 import { BrowserRouter, Routes, Route, Link, useLocation, useParams, useNavigate } from 'react-router-dom';
 import { API_ENDPOINTS } from './config';
@@ -99,11 +99,11 @@ const Footer = () => (
 const TeamCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFading, setIsFading] = useState(false);
-    const autoSwitchRef = React.useRef(null);
+    const autoSwitchRef = useRef(null);
 
     const currentMember = TEAM_MEMBERS[currentIndex];
 
-    const startAutoSwitch = React.useCallback(() => {
+    const startAutoSwitch = useCallback(() => {
         if (autoSwitchRef.current) clearInterval(autoSwitchRef.current);
         autoSwitchRef.current = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % TEAM_MEMBERS.length);
