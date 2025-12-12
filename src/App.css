@@ -1,0 +1,689 @@
+/* variable storing of color palette */
+:root {
+    --dark-imperial-blue: #021373;
+    --oxford-blue: #020F59;
+    --cetacean-blue: #010B40;
+    --rich-black: #010626;
+    --vista-blue: #8491D9;
+    --background: #f6f8fe;
+    --text: #1d2333;
+    --accent: var(--vista-blue);
+    --nav-bg: var(--dark-imperial-blue);
+    --nav-text: #fff;
+    --card-bg: #fff;
+    --card-border: #e1e6f2;
+    /* NEW: Status Colors for Project Log */
+    --status-pending: #f59e0b;      /* Amber */
+    --status-inprogress: #3b82f6;   /* Blue */
+    --status-complete: #10b981;     /* Emerald */
+}
+
+/* Dark mode palette using the same color family */
+body.dark-mode {
+    --background: #13182b;        /* Dark blue-grey as background */
+    --text: #ffffff;              /* Bright light text */
+    --nav-bg: #010626;            /* Rich black for nav */
+    --nav-text: #fff;
+    --card-bg: #181f36;           /* Darker blue-grey for cards */
+    --card-border: #38395e;       /* Subtle dark border */
+    --accent: #8491D9;            /* Vista Blue accent remains for highlights */
+    /* NEW: Dark Mode Status Colors */
+    --status-pending: #fcd34d;      /* Lighter Amber */
+    --status-inprogress: #60a5fa;   /* Lighter Blue */
+    --status-complete: #34d399;     /* Lighter Emerald */
+}
+
+/* main design of the page */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+}
+
+header {
+    background: var(--nav-bg);
+    box-shadow: 0 2px 8px rgba(2, 15, 89, 0.04);
+}
+
+#navigator {
+    display: block;
+    justify-content: center;
+    max-width: 1100px;
+    margin: auto;
+    padding: 18px 24px;
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+}
+
+nav a {
+    color: var(--nav-text);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: .05em;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+nav a:hover, nav a.active {
+    background: var(--vista-blue);
+    color: var(--dark-imperial-blue);
+}
+
+main {
+    max-width: 900px;
+    margin: 40px auto 0 auto;
+    padding: 24px;
+}
+
+/* Base style for all content sections (List, Detail, Team) */
+section {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(132, 145, 217, 0.05);
+    padding: 40px 32px 32px 32px;
+    margin-bottom: 32px;
+    transition: background 0.3s, border-color 0.3s;
+    /* visibility classes are removed, as React Router handles rendering/display: block */
+}
+
+h1, h2, h3 {
+    color: var(--dark-imperial-blue);
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    margin-bottom: 18px;
+    font-weight: 700;
+}
+
+/* Dark mode overrides for headings */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3 {
+  color: #ffffff; /* Explicit white for dark mode contrast */
+}
+
+h1 {
+    font-size: 2.6rem;
+    letter-spacing: -1.5px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: var(--oxford-blue);
+    margin-bottom: 12px;
+}
+
+body.dark-mode h2 {
+    color: var(--text);
+}
+
+h3 {
+    font-size: 1.15rem;
+}
+
+p{
+    font-size: 1rem;
+    color: var(--text); /* Changed from an invalid color to --text variable */
+}
+
+body.dark-mode p {
+    color: #dce3fc;
+}
+
+ul, ol {
+    margin-top: 10px;
+    margin-left: 24px;
+    line-height: 1.8em;
+}
+
+body.dark-mode ul,
+body.dark-mode ol {
+  color: #e1e5ee;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+article {
+    margin-bottom: 16px;
+}
+
+footer{
+    margin-top: 60px;
+    background: var(--rich-black);
+    color: #dce3fc;
+    padding: 22px 0;
+    text-align: center;
+    letter-spacing: 1px;
+    font-size: 1.05em;
+    font-weight: 500;
+    border-top: 2px solid var(--oxford-blue);
+    
+}
+footer p    {
+    color: #dce3fc;
+}
+
+/* --- NEW: Project List Table and Status Styles --- */
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
+
+.project-table th, .project-table td {
+    padding: 12px 8px;
+    text-align: left;
+    border-bottom: 1px solid var(--card-border);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.project-table th {
+    background: var(--background);
+    color: var(--dark-imperial-blue);
+    font-weight: 700;
+    border-top: 2px solid var(--vista-blue);
+}
+
+/* Status class styles (applies color to the text) */
+.status-pending { color: var(--status-pending); font-weight: bold; }
+.status-inprogress { color: var(--status-inprogress); font-weight: bold; }
+.status-complete { color: var(--status-complete); font-weight: bold; }
+
+/* Status display on detail view (optional background/padding) */
+.status-display {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    background: rgba(132, 145, 217, 0.1);
+    font-weight: 600; /* Added weight for better visibility */
+    margin-left: 8px;
+}
+body.dark-mode .status-display {
+    background: rgba(132, 145, 217, 0.05);
+}
+
+/* --- Interactive Button Styling (General and Table) --- */
+
+/* Style for the button used in Project Detail View and similar primary actions */
+.primary-btn {
+    background: var(--vista-blue);
+    color: var(--rich-black);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.primary-btn:hover {
+    background: var(--dark-imperial-blue);
+    color: white;
+}
+
+body.dark-mode .primary-btn {
+    background: var(--vista-blue);
+    color: var(--rich-black);
+}
+
+body.dark-mode .primary-btn:hover {
+    background: var(--oxford-blue);
+    color: white;
+}
+
+/* Button styling for "Change Status" in the table (smaller) */
+.project-table button, .projectButton {
+    background: var(--vista-blue);
+    color: var(--rich-black);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.project-table button:hover {
+    background: var(--dark-imperial-blue);
+    color: white;
+}
+
+/* Link styling for "View Detail" */
+.details-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 4px 0;
+}
+
+.details-link:hover {
+    text-decoration: underline;
+}
+
+/* Dark Mode Overrides for Table elements */
+body.dark-mode .project-table th {
+    background: var(--card-bg);
+    color: var(--text);
+    border-top: 2px solid var(--accent);
+}
+
+body.dark-mode .project-table button {
+    background: var(--vista-blue);
+    color: var(--rich-black);
+}
+/* No need for dark mode hover for table button as primary-btn hover covers the desired effect */
+
+
+/* --- Team Carousel Styles (Adjusted for general use) --- */
+
+/* design and transition for the auto switcher and buttons in teams tab */
+#teamContainer {
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    gap:1rem; 
+    margin-top:20px;
+}
+#teamProfile {
+    display: flex;          
+    align-items: center;      
+    gap: 20px;            
+    justify-content: center;  
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top:20px;
+}
+
+#teamProfile.fade-out {
+    opacity: 0;
+}
+
+#teamImage {
+    width: 200px;       
+    height: 200px;      
+    border-radius: 50%;
+    border: 2px solid var(--dark-imperial-blue);
+    object-fit: cover;
+    transition: opacity 0.5s ease-in-out;
+    margin-top:15px;
+}
+
+body.dark-mode #teamImage {
+    border-color: var(--vista-blue);
+}
+
+#teamText {
+  text-align: left;     
+}
+
+#teamText h2 {
+  margin-bottom: 0.5rem;
+}
+
+#teamText p {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+body.dark-mode #teamText p {
+  color: #b4b8c5;
+}
+
+/* design of buttons in teams tab  */
+#prevTeamBtn {
+    left: 25%;
+}
+
+#nextTeamBtn {
+    right: 25%;
+}
+
+#prevTeamBtn, #nextTeamBtn {
+    background-color: var(--dark-imperial-blue);
+    color: white;
+    border: none;
+    padding: 0.4em 0.8em;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    top: 50%; 
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+#prevTeamBtn:hover, #nextTeamBtn:hover {
+    background-color: var(--vista-blue);
+    color: var(--rich-black);
+}
+
+#prevTeamBtn:focus, #nextTeamBtn:focus {
+    outline: 2px solid var(--oxford-blue);
+    outline-offset: 2px;
+}
+
+
+/* --- Theme toggle styling (Retained) --- */
+#themeToggle {
+    display: block;
+    align-items: center;
+    position: absolute;
+    top: 70px;    
+    left: 24px;   
+    z-index: 200; 
+    gap: 8px;
+    background: var(--card-bg);
+    color: var(--text);
+    border: 1px solid var(--card-border);
+    border-radius: 999px; 
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    margin: 16px 0 0 0; 
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(16,24,40,0.06);
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.06s ease;
+}
+
+#themeToggle:hover {
+    transform: translateY(-1px);
+    background-color: var(--vista-blue);
+    color: var(--card-bg);
+}
+
+#themeToggle:active { transform: translateY(0); }
+
+#themeToggle:focus {
+    outline: 3px solid rgba(132,145,217,0.18);
+    outline-offset: 2px;
+}
+
+/* Dark mode overrides for the toggle to ensure contrast */
+body.dark-mode #themeToggle {
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.06);
+    box-shadow: 0 4px 12px rgba(1,6,38,0.45);
+}
+
+body.dark-mode #themeToggle:hover {
+    background-color: var(--vista-blue);
+    color: var(--card-bg);
+}
+
+/* to retain user interface in mobile devices */
+@media (max-width: 700px) {
+
+    main {
+        padding: 8px;
+    }
+    section {
+        padding: 20px 8px 16px 8px;
+    }
+
+    #navigator {
+    padding: 16px 10px;
+    }
+
+    nav ul {
+        flex-direction: row;
+        gap: 1px;
+        align-items: flex-start;
+    }
+    nav {
+        padding: 1px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    #teamContainer { 
+        position: relative;
+        padding-bottom: 90px;
+    }
+    
+    #prevTeamBtn {
+        position: absolute;
+        top: 90%;
+        left: 10px; 
+        transform: translateY(-50%);
+    }
+
+    #nextTeamBtn {
+        position: absolute;
+        top: 90%;
+        right: 10px;
+        transform: translateY(-50%);
+    }
+
+    #themeToggle {
+        top: 70px;
+        left: 10px;
+        padding: 6px 14px;
+        font-size: 1rem;
+    }
+
+    /* Adjust table fonts for smaller screens */
+    .project-table {
+        font-size: 0.75rem;
+    }
+    
+    .project-table th, .project-table td {
+        padding: 8px 4px;
+    }
+    
+    .project-table button {
+        padding: 4px 6px;
+        font-size: 0.75rem;
+    }
+    
+    /* Ensure general button shrinks on mobile */
+    .primary-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+/* (Reverted) Project Log Layout removed */
+
+/* NEW: Create Form Styles */
+.create-form {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.create-form h2 {
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.create-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 10px;
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    background: var(--background);
+    color: var(--text);
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(132, 145, 217, 0.2);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled,
+.form-group select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.submit-btn {
+    padding: 12px 24px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: var(--dark-imperial-blue);
+    transform: translateY(-1px);
+}
+
+.submit-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-message {
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.form-message.success {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.form-message.error {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+body.dark-mode .form-message.success {
+    background: #065f46;
+    color: #d1fae5;
+}
+
+body.dark-mode .form-message.error {
+    background: #991b1b;
+    color: #fee2e2;
+}
+
+/* Delete Button Styling */
+.delete-btn {
+    background: #ef4444;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+}
+
+/* React app-specific rules (kept for compatibility) */
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+
+.App-header {
+    background-color: var(--nav-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: var(--nav-text);
+}
+
+.App-link {
+    color: var(--accent);
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
