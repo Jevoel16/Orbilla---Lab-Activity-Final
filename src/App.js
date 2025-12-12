@@ -99,11 +99,19 @@ const Footer = () => (
 const TeamCarousel = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFading, setIsFading] = useState(false);
+    const autoSwitchRef = React.useRef(null);
 
     const currentMember = TEAM_MEMBERS[currentIndex];
 
+    const startAutoSwitch = React.useCallback(() => {
+        if (autoSwitchRef.current) clearInterval(autoSwitchRef.current);
+        autoSwitchRef.current = setInterval(() => {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % TEAM_MEMBERS.length);
+        }, 4000);
+    }, []);
+
     const goToNext = (manual = false) => {
-        if (manual) clearInterval(window.autoSwitchInterval);
+        if (manual && autoSwitchRef.current) clearInterval(autoSwitchRef.current);
         setIsFading(true);
         setTimeout(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % TEAM_MEMBERS.length);
@@ -113,7 +121,7 @@ const TeamCarousel = () => {
     };
 
     const goToPrev = () => {
-        clearInterval(window.autoSwitchInterval);
+        if (autoSwitchRef.current) clearInterval(autoSwitchRef.current);
         setIsFading(true);
         setTimeout(() => {
             setCurrentIndex((prevIndex) => (prevIndex - 1 + TEAM_MEMBERS.length) % TEAM_MEMBERS.length);
@@ -122,17 +130,13 @@ const TeamCarousel = () => {
         }, 500);
     };
 
-    const startAutoSwitch = () => {
-        window.autoSwitchInterval = setInterval(() => {
-            goToNext();
-        }, 4000);
-    };
-
     useEffect(() => {
         startAutoSwitch();
         // Cleanup function: clears interval when component unmounts
-        return () => clearInterval(window.autoSwitchInterval);
-    }, []);
+        return () => {
+            if (autoSwitchRef.current) clearInterval(autoSwitchRef.current);
+        };
+    }, [startAutoSwitch]);
 
     return (
         <>
@@ -464,7 +468,6 @@ const App = () => {
     // 1. STATE INITIALIZATION: Fetch projects from server
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     
     // Fetch projects from API on mount
     useEffect(() => {
@@ -474,7 +477,6 @@ const App = () => {
     const fetchProjects = async () => {
         try {
             setLoading(true);
-            setError(null);
             const response = await fetch(API_ENDPOINTS.PROJECTS);
             const data = await response.json();
             if (data.success) {
@@ -495,7 +497,6 @@ const App = () => {
             }
         } catch (error) {
             console.error('Error fetching projects:', error);
-            setError('Failed to fetch projects from server');
             // Fallback to mock data if server is not running
             // Fallback: retain current order; optionally enforce title-based first/last
             const fallback = PROJECT_LOG.slice();
